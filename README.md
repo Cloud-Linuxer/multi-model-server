@@ -14,17 +14,22 @@ This repository contains a comprehensive benchmarking suite comparing three majo
 ### 한국어
 이 저장소는 NVIDIA RTX 5090에서 멀티모델 배포를 위한 세 가지 주요 LLM 서빙 프레임워크(vLLM, SGLang, Ollama)를 비교하는 포괄적인 벤치마킹 스위트를 포함합니다. 여러 언어에 걸친 4,984개 이상의 벤치마크 데이터 포인트로, 단일 GPU에서 여러 LLM을 배포하기 위한 결정적인 가이드입니다.
 
-## 🏆 Key Results Summary / 주요 결과 요약
+## 📊 Benchmark Results Summary / 벤치마크 결과 요약
 
 | Metric / 지표 | Ollama | vLLM | SGLang |
 |--------------|--------|------|--------|
-| **Throughput / 처리량** | 🥇 428 tok/s | 112 tok/s | 77 tok/s |
-| **Latency / 지연시간** | 🥇 152ms | 207ms | 357ms |
-| **Memory / 메모리 (3 models)** | 🥇 8.5GB | 27GB | ~5GB (1 model) |
-| **Multi-model / 멀티모델** | ✅ Dynamic | ✅ Excellent | ❌ Limited |
-| **RTX 5090 Support** | ✅ Native | ✅ Native | ⚠️ Issues |
+| **Latency / 지연시간** | 152-348ms | 207ms | 357ms |
+| **Throughput / 처리량*** | 64-128 tok/s | 13-112 tok/s† | 77 tok/s |
+| **Memory (Single) / 메모리 (단일)** | ~3GB | ~9GB | ~5GB |
+| **Memory (Multi) / 메모리 (멀티)** | 8.5GB (3 models) | 27GB (3 models) | N/A |
+| **Multi-model / 멀티모델** | ✅ Dynamic | ✅ Static | ⚠️ Limited |
+| **RTX 5090 Support** | ✅ Native | ✅ Native | ⚠️ Partial |
 
-*Benchmark data from 2025-09-18 testing with TinyLlama 1.1B
+*Throughput varies significantly based on token counting method (word vs subword)
+*처리량은 토큰 계산 방식(단어 vs 서브워드)에 따라 크게 달라짐
+†Lower values from word-based counting, higher from token-based
+
+**Note**: Direct comparison is limited due to different test methodologies. See [detailed report](OBJECTIVE_BENCHMARK_REPORT.md) for context.
 
 ### 🚀 Models Tested / 테스트된 모델
 - **TinyLlama 1.1B**: Fast responses for simple queries / 간단한 쿼리를 위한 빠른 응답
@@ -155,33 +160,34 @@ curl -X POST http://localhost:8001/v1/completions \
 - 🔍 **[Code Analysis](claudedocs/CODE_ANALYSIS_REPORT.md)** - Security and quality assessment / 보안 및 품질 평가
 - 📈 **[Multi-model Comparison](MULTIMODEL_SERVING_COMPARISON.md)** - Framework capabilities matrix / 프레임워크 기능 매트릭스
 
-## 🎯 Use Case Recommendations / 사용 사례 권장사항
+## 🎯 Use Case Considerations / 사용 사례 고려사항
 
-| Scenario / 시나리오 | Best Choice / 최선의 선택 | Why / 이유 |
-|--------------------|---------------------------|-----------|
-| **Production API** | vLLM | 4.8x faster throughput / 4.8배 빠른 처리량 |
-| **Development** | Ollama | Easy setup, dynamic loading / 쉬운 설정, 동적 로딩 |
-| **Memory Limited** | Ollama | 3.2x better efficiency / 3.2배 더 나은 효율성 |
-| **Multi-language** | vLLM | Best cross-language performance / 최고의 다국어 성능 |
+| Scenario / 시나리오 | Options / 옵션 | Considerations / 고려사항 |
+|--------------------|----------------|--------------------------|
+| **Production API** | vLLM, Ollama | vLLM: feature-rich; Ollama: simpler deployment |
+| **Development** | Ollama, vLLM | Both offer different advantages |
+| **Memory Limited** | Ollama | Dynamic loading reduces memory footprint |
+| **Multi-model** | vLLM | Most mature multi-model support |
 
 ## 🔬 Technical Highlights / 기술적 하이라이트
 
-### vLLM Advantages / vLLM 장점
-- ✅ **332 tok/s throughput** with TinyLlama / TinyLlama로 332 tok/s 처리량
-- ✅ **3 models concurrent** on single GPU / 단일 GPU에서 3개 모델 동시 실행
-- ✅ **99.7% success rate** in production tests / 프로덕션 테스트에서 99.7% 성공률
-- ✅ **Native RTX 5090 support** without modifications / 수정 없이 네이티브 RTX 5090 지원
+### vLLM Characteristics / vLLM 특성
+- Multi-model support with static allocation / 정적 할당으로 멀티모델 지원
+- OpenAI API compatible endpoints / OpenAI API 호환 엔드포인트
+- Production-ready features / 프로덕션 준비 기능
+- Higher memory usage per model / 모델당 높은 메모리 사용
 
-### Ollama Advantages / Ollama 장점
-- ✅ **68.5% memory savings** vs vLLM / vLLM 대비 68.5% 메모리 절약
-- ✅ **Dynamic model swapping** / 동적 모델 교체
-- ✅ **131 tok/s throughput** / 131 tok/s 처리량
-- ✅ **CPU fallback support** / CPU 폴백 지원
+### Ollama Characteristics / Ollama 특성
+- Dynamic model loading and unloading / 동적 모델 로딩 및 언로딩
+- Lower memory footprint / 낮은 메모리 사용량
+- Simple deployment process / 간단한 배포 프로세스
+- CPU fallback capability / CPU 폴백 기능
 
-### SGLang Limitations / SGLang 제한사항
-- ❌ **Single model only** on RTX 5090 / RTX 5090에서 단일 모델만
-- ⚠️ **Custom build required** / 커스텀 빌드 필요
-- ❌ **Many optimizations disabled** / 많은 최적화 비활성화
+### SGLang Characteristics / SGLang 특성
+- Specialized optimization features / 특화된 최적화 기능
+- Lower baseline memory usage / 낮은 기준 메모리 사용량
+- RTX 5090 compatibility challenges / RTX 5090 호환성 과제
+- Limited multi-model support / 제한적 멀티모델 지원
 
 ## 🔐 Security Note / 보안 참고사항
 
