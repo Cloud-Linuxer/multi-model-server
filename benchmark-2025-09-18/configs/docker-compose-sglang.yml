@@ -1,0 +1,101 @@
+version: '3.8'
+
+services:
+  # SGLang TinyLlama 1.1B
+  sglang-tinyllama:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-tinyllama-bench
+    ports:
+      - "9001:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--port", "30000",
+      "--mem-fraction-static", "0.20",
+      "--host", "0.0.0.0"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # SGLang Qwen 2.5-3B
+  sglang-qwen:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-qwen-bench
+    ports:
+      - "9002:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--port", "30000",
+      "--mem-fraction-static", "0.30",
+      "--trust-remote-code",
+      "--host", "0.0.0.0"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - sglang-tinyllama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # SGLang Yi-6B
+  sglang-yi:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-yi-bench
+    ports:
+      - "9003:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model", "01-ai/Yi-6B-Chat",
+      "--port", "30000",
+      "--mem-fraction-static", "0.40",
+      "--host", "0.0.0.0"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - sglang-qwen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge

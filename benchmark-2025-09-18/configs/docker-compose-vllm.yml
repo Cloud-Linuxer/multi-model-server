@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # TinyLlama 1.1B
+  vllm-tinyllama:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-tinyllama-bench
+    ports:
+      - "8001:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--served-model-name", "tinyllama",
+      "--max-model-len", "1024",
+      "--gpu-memory-utilization", "0.15",
+      "--enforce-eager",
+      "--max-num-seqs", "8"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Qwen 2.5-3B
+  vllm-qwen:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen-bench
+    ports:
+      - "8002:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--served-model-name", "qwen",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.35",
+      "--trust-remote-code",
+      "--enforce-eager",
+      "--max-num-seqs", "16"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - vllm-tinyllama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Yi-6B
+  vllm-yi:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-yi-bench
+    ports:
+      - "8003:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "01-ai/Yi-6B-Chat",
+      "--served-model-name", "yi",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.35",
+      "--enforce-eager",
+      "--dtype", "float16",
+      "--max-num-seqs", "8"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      - vllm-qwen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge
