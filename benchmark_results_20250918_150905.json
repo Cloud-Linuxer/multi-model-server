@@ -1,0 +1,752 @@
+{
+  "sglang": {
+    "framework": "SGLang",
+    "total_tests": 40,
+    "successful_tests": 40,
+    "failed_tests": 0,
+    "avg_latency": 0.13135950565338134,
+    "min_latency": 0.013844728469848633,
+    "max_latency": 0.5554254055023193,
+    "p50_latency": 0.024594545364379883,
+    "p95_latency": 0.5427307605743408,
+    "avg_tokens_per_second": 76.99563307374392,
+    "max_tokens_per_second": 202.66583733175548,
+    "raw_results": [
+      {
+        "success": true,
+        "latency": 0.0317995548248291,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.07571029663085938,
+        "tokens": 12,
+        "tokens_per_second": 158.49891671285332,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.27669191360473633,
+        "tokens": 45,
+        "tokens_per_second": 162.63576124701646,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.5554254055023193,
+        "tokens": 76,
+        "tokens_per_second": 136.83205565879115,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.014399290084838867,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.017389535903930664,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.01648712158203125,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.059796810150146484,
+        "tokens": 10,
+        "tokens_per_second": 167.23300080540338,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.5427653789520264,
+        "tokens": 110,
+        "tokens_per_second": 202.66583733175548,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.13791608810424805,
+        "tokens": 27,
+        "tokens_per_second": 195.77121401232924,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.014261484146118164,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.014870643615722656,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.5420730113983154,
+        "tokens": 60,
+        "tokens_per_second": 110.68619676383774,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.5295960903167725,
+        "tokens": 92,
+        "tokens_per_second": 173.71729452340017,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.013844728469848633,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.014318227767944336,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.12088203430175781,
+        "tokens": 22,
+        "tokens_per_second": 181.99561355065717,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.07088518142700195,
+        "tokens": 12,
+        "tokens_per_second": 169.28785055530517,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.013933181762695312,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.014794349670410156,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.014028310775756836,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.1375565528869629,
+        "tokens": 21,
+        "tokens_per_second": 152.6644827837228,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.3301868438720703,
+        "tokens": 59,
+        "tokens_per_second": 178.68670752629785,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.014116764068603516,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.014543294906616211,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.014370441436767578,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.014120101928710938,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.25154924392700195,
+        "tokens": 40,
+        "tokens_per_second": 159.01459044578863,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.013911247253417969,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.014342308044433594,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.2717409133911133,
+        "tokens": 42,
+        "tokens_per_second": 154.5589858953257,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.13285183906555176,
+        "tokens": 22,
+        "tokens_per_second": 165.59800868955045,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.4149026870727539,
+        "tokens": 81,
+        "tokens_per_second": 195.22650135499487,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.0442962646484375,
+        "tokens": 6,
+        "tokens_per_second": 135.45160179125043,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.014087200164794922,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.3989133834838867,
+        "tokens": 60,
+        "tokens_per_second": 150.4085911482676,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.014145851135253906,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.03879213333129883,
+        "tokens": 5,
+        "tokens_per_second": 128.89211215320884,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.014023780822753906,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.014060735702514648,
+        "tokens": 0,
+        "tokens_per_second": 0.0,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 9
+      }
+    ]
+  },
+  "vllm": {
+    "framework": "vLLM",
+    "total_tests": 40,
+    "successful_tests": 40,
+    "failed_tests": 0,
+    "avg_latency": 1.1613339126110076,
+    "min_latency": 0.00900578498840332,
+    "max_latency": 28.24839949607849,
+    "p50_latency": 0.009270191192626953,
+    "p95_latency": 15.84053544998169,
+    "avg_tokens_per_second": 177.50505907237812,
+    "max_tokens_per_second": 381.24810448567774,
+    "raw_results": [
+      {
+        "success": true,
+        "latency": 16.656577348709106,
+        "tokens": 1,
+        "tokens_per_second": 0.060036343545542416,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.009563684463500977,
+        "tokens": 1,
+        "tokens_per_second": 104.56221175180116,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 28.24839949607849,
+        "tokens": 32,
+        "tokens_per_second": 1.1328075420500308,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.009158134460449219,
+        "tokens": 1,
+        "tokens_per_second": 109.19254399666771,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.00900578498840332,
+        "tokens": 1,
+        "tokens_per_second": 111.03973737855081,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.009052038192749023,
+        "tokens": 1,
+        "tokens_per_second": 110.4723575736824,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.009712457656860352,
+        "tokens": 1,
+        "tokens_per_second": 102.96055183248643,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.03613424301147461,
+        "tokens": 11,
+        "tokens_per_second": 304.4203803164465,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.07772207260131836,
+        "tokens": 27,
+        "tokens_per_second": 347.3916623209301,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.009131908416748047,
+        "tokens": 1,
+        "tokens_per_second": 109.50613544984596,
+        "error": null,
+        "output_length": 32,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.009106874465942383,
+        "tokens": 1,
+        "tokens_per_second": 109.80715763018038,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.030646800994873047,
+        "tokens": 9,
+        "tokens_per_second": 293.66849745608437,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.17520380020141602,
+        "tokens": 64,
+        "tokens_per_second": 365.28888030068396,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.009058713912963867,
+        "tokens": 1,
+        "tokens_per_second": 110.39094617712857,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.009144783020019531,
+        "tokens": 1,
+        "tokens_per_second": 109.35196579413912,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.009083986282348633,
+        "tokens": 1,
+        "tokens_per_second": 110.08382982073961,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.009124279022216797,
+        "tokens": 1,
+        "tokens_per_second": 109.59770054873269,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.022815704345703125,
+        "tokens": 6,
+        "tokens_per_second": 262.97675973917404,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.009065628051757812,
+        "tokens": 1,
+        "tokens_per_second": 110.30675362928676,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.08925461769104004,
+        "tokens": 32,
+        "tokens_per_second": 358.5248677079076,
+        "error": null,
+        "output_length": 64,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.009260892868041992,
+        "tokens": 1,
+        "tokens_per_second": 107.98094894833046,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.04801440238952637,
+        "tokens": 16,
+        "tokens_per_second": 333.2333467403556,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.20003414154052734,
+        "tokens": 74,
+        "tokens_per_second": 369.9368489303984,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.3357393741607666,
+        "tokens": 128,
+        "tokens_per_second": 381.24810448567774,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.009166717529296875,
+        "tokens": 1,
+        "tokens_per_second": 109.090303786933,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.009349346160888672,
+        "tokens": 1,
+        "tokens_per_second": 106.95935125210384,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.00908970832824707,
+        "tokens": 1,
+        "tokens_per_second": 110.01453114754098,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.03229546546936035,
+        "tokens": 10,
+        "tokens_per_second": 309.64099308267566,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.009198904037475586,
+        "tokens": 1,
+        "tokens_per_second": 108.70860223414458,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.009270668029785156,
+        "tokens": 1,
+        "tokens_per_second": 107.86709186297706,
+        "error": null,
+        "output_length": 128,
+        "prompt_index": 9
+      },
+      {
+        "success": true,
+        "latency": 0.05387067794799805,
+        "tokens": 18,
+        "tokens_per_second": 334.13353396769196,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 0
+      },
+      {
+        "success": true,
+        "latency": 0.009053707122802734,
+        "tokens": 1,
+        "tokens_per_second": 110.45199346921578,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 1
+      },
+      {
+        "success": true,
+        "latency": 0.1508162021636963,
+        "tokens": 56,
+        "tokens_per_second": 371.3128907676475,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 2
+      },
+      {
+        "success": true,
+        "latency": 0.009096622467041016,
+        "tokens": 1,
+        "tokens_per_second": 109.93091156890496,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 3
+      },
+      {
+        "success": true,
+        "latency": 0.00926971435546875,
+        "tokens": 1,
+        "tokens_per_second": 107.87818930041152,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 4
+      },
+      {
+        "success": true,
+        "latency": 0.00954294204711914,
+        "tokens": 1,
+        "tokens_per_second": 104.78948683355819,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 5
+      },
+      {
+        "success": true,
+        "latency": 0.009245157241821289,
+        "tokens": 1,
+        "tokens_per_second": 108.16473682853238,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 6
+      },
+      {
+        "success": true,
+        "latency": 0.009241342544555664,
+        "tokens": 1,
+        "tokens_per_second": 108.20938572276258,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 7
+      },
+      {
+        "success": true,
+        "latency": 0.00907754898071289,
+        "tokens": 1,
+        "tokens_per_second": 110.16189525660556,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 8
+      },
+      {
+        "success": true,
+        "latency": 0.06576061248779297,
+        "tokens": 23,
+        "tokens_per_second": 349.7534333985933,
+        "error": null,
+        "output_length": 256,
+        "prompt_index": 9
+      }
+    ]
+  }
+}
