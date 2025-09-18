@@ -1,0 +1,16 @@
+{
+  "Ollama": {
+    "success_rate": "300/300",
+    "avg_latency_ms": 151.76,
+    "avg_throughput_tok_s": 427.77,
+    "p50_latency_ms": 149.51,
+    "p95_latency_ms": 151.51
+  },
+  "vLLM": {
+    "success_rate": "299/300",
+    "avg_latency_ms": 207.08,
+    "avg_throughput_tok_s": 111.75,
+    "p50_latency_ms": 256.95,
+    "p95_latency_ms": 260.56
+  }
+}

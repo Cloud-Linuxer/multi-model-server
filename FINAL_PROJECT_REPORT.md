@@ -15,11 +15,11 @@ This project comprehensively evaluated three major LLM serving frameworks (vLLM,
 
 ## 🏆 Executive Summary / 핵심 요약
 
-### Performance Champion / 성능 챔피언: **vLLM**
-- **Throughput / 처리량**: 332.03 tok/s (4.8x faster than SGLang)
-- **Latency / 지연시간**: 261.73ms average (33.6% lower)
-- **Multi-model / 멀티모델**: ✅ 3 models concurrent (TinyLlama, Qwen, Yi)
-- **Success Rate / 성공률**: 99.7%
+### Performance Champion / 성능 챔피언: **Ollama**
+- **Throughput / 처리량**: 427.77 tok/s (3.8x faster than vLLM, 5.5x faster than SGLang)
+- **Latency / 지연시간**: 151.76ms average (26.6% lower than vLLM, 57% lower than SGLang)
+- **Multi-model / 멀티모델**: ✅ Dynamic model loading
+- **Success Rate / 성공률**: 100%
 
 ### Memory Efficiency Champion / 메모리 효율 챔피언: **Ollama**
 - **Memory Usage / 메모리 사용**: 8.5GB for 3 models (vs 27GB vLLM)
@@ -40,9 +40,9 @@ This project comprehensively evaluated three major LLM serving frameworks (vLLM,
 
 | Framework | Throughput<br>처리량 | Latency<br>지연시간 | Memory<br>메모리 | Multi-model<br>멀티모델 | RTX 5090<br>호환성 |
 |-----------|---------------------|-------------------|-----------------|----------------------|-------------------|
-| **vLLM** | 332 tok/s | 262ms | 27GB (3 models) | ✅ Excellent | ✅ Native |
-| **SGLang** | 69 tok/s | 394ms | ~5GB (1 model) | ❌ Limited | ⚠️ Custom Build |
-| **Ollama** | 131 tok/s | 817ms (avg) | 8.5GB (3 models) | ✅ Dynamic | ✅ Native |
+| **Ollama** | 🥇 428 tok/s | 🥇 152ms | 🥇 8.5GB (3 models) | ✅ Dynamic | ✅ Native |
+| **vLLM** | 112 tok/s | 207ms | 27GB (3 models) | ✅ Excellent | ✅ Native |
+| **SGLang** | 77 tok/s | 357ms | ~5GB (1 model) | ❌ Limited | ⚠️ Compatibility |
 
 ---
 

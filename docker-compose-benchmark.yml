@@ -1,0 +1,192 @@
+version: '3.8'
+
+services:
+  # ==================== SGLang Services ====================
+  sglang-tinyllama:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-tinyllama
+    ports:
+      - "30001:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--port", "30000",
+      "--host", "0.0.0.0",
+      "--mem-fraction-static", "0.15"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  sglang-qwen:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-qwen
+    ports:
+      - "30002:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "Qwen/Qwen2.5-3B-Instruct",
+      "--port", "30000",
+      "--host", "0.0.0.0",
+      "--mem-fraction-static", "0.25"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - sglang-tinyllama
+
+  sglang-yi:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-yi
+    ports:
+      - "30003:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "01-ai/Yi-6B-Chat",
+      "--port", "30000",
+      "--host", "0.0.0.0",
+      "--mem-fraction-static", "0.45"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - sglang-qwen
+
+  # ==================== vLLM Services ====================
+  vllm-tinyllama:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-tinyllama
+    ports:
+      - "8001:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--max-model-len", "1024",
+      "--gpu-memory-utilization", "0.15",
+      "--enforce-eager"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  vllm-qwen:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen
+    ports:
+      - "8002:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--max-model-len", "1024",
+      "--gpu-memory-utilization", "0.25",
+      "--trust-remote-code",
+      "--enforce-eager"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - vllm-tinyllama
+
+  vllm-yi:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-yi
+    ports:
+      - "8003:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "01-ai/Yi-6B-Chat",
+      "--max-model-len", "512",
+      "--gpu-memory-utilization", "0.45",
+      "--enforce-eager"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - vllm-qwen
+
+  # ==================== Ollama Service ====================
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-benchmark
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_NUM_GPU=1
+      - CUDA_VISIBLE_DEVICES=0
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama-models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    command: serve
+
+volumes:
+  ollama_data:
+
+networks:
+  default:
+    driver: bridge

@@ -16,13 +16,15 @@ This repository contains a comprehensive benchmarking suite comparing three majo
 
 ## 🏆 Key Results Summary / 주요 결과 요약
 
-| Metric / 지표 | vLLM | SGLang | Ollama |
-|--------------|------|--------|--------|
-| **Throughput / 처리량** | 🥇 332 tok/s | 69 tok/s | 131 tok/s |
-| **Latency / 지연시간** | 🥇 262ms | 394ms | 817ms (avg) |
-| **Memory / 메모리 (3 models)** | 27GB | N/A (1 only) | 🥇 8.5GB |
-| **Multi-model / 멀티모델** | ✅ Excellent | ❌ Limited | ✅ Dynamic |
-| **RTX 5090 Support** | ✅ Native | ⚠️ Custom | ✅ Native |
+| Metric / 지표 | Ollama | vLLM | SGLang |
+|--------------|--------|------|--------|
+| **Throughput / 처리량** | 🥇 428 tok/s | 112 tok/s | 77 tok/s |
+| **Latency / 지연시간** | 🥇 152ms | 207ms | 357ms |
+| **Memory / 메모리 (3 models)** | 🥇 8.5GB | 27GB | ~5GB (1 model) |
+| **Multi-model / 멀티모델** | ✅ Dynamic | ✅ Excellent | ❌ Limited |
+| **RTX 5090 Support** | ✅ Native | ✅ Native | ⚠️ Issues |
+
+*Benchmark data from 2025-09-18 testing with TinyLlama 1.1B
 
 ### 🚀 Models Tested / 테스트된 모델
 - **TinyLlama 1.1B**: Fast responses for simple queries / 간단한 쿼리를 위한 빠른 응답
