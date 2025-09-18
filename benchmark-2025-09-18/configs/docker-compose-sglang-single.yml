@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # SGLang TinyLlama 1.1B - Single model for fair comparison
+  sglang-tinyllama:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-tinyllama-bench
+    ports:
+      - "9001:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--port", "30000",
+      "--mem-fraction-static", "0.20",
+      "--host", "0.0.0.0"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,116 @@
+{
+  "vLLM": {
+    "english": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 82.75,
+      "avg_latency_ms": 218.86849999999998,
+      "avg_throughput": 377.84900000000005,
+      "median_throughput": 377.755,
+      "std_throughput": 2.6490055731001743,
+      "min_latency": 152.03,
+      "max_latency": 265.94,
+      "total_requests": 20,
+      "meaningful_requests": 20
+    },
+    "korean": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 48.3,
+      "avg_latency_ms": 131.52349999999996,
+      "avg_throughput": 375.27090909090913,
+      "median_throughput": 375.61,
+      "std_throughput": 4.12018071095299,
+      "min_latency": 9.11,
+      "max_latency": 266.96,
+      "total_requests": 20,
+      "meaningful_requests": 11
+    },
+    "chinese": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 22.2,
+      "avg_latency_ms": 63.6395,
+      "avg_throughput": 367.355,
+      "median_throughput": 376.685,
+      "std_throughput": 25.37687667937092,
+      "min_latency": 8.99,
+      "max_latency": 262.08,
+      "total_requests": 20,
+      "meaningful_requests": 6
+    }
+  },
+  "SGLang": {
+    "english": {
+      "success_rate": 95.0,
+      "avg_tokens_generated": 80.05263157894737,
+      "avg_latency_ms": 214.07105263157894,
+      "avg_throughput": 373.6768421052632,
+      "median_throughput": 374.33,
+      "std_throughput": 2.9930475970369486,
+      "min_latency": 160.9,
+      "max_latency": 267.44,
+      "total_requests": 19,
+      "meaningful_requests": 19
+    },
+    "korean": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 62.3,
+      "avg_latency_ms": 169.23549999999994,
+      "avg_throughput": 367.835625,
+      "median_throughput": 372.255,
+      "std_throughput": 9.874173024444456,
+      "min_latency": 9.15,
+      "max_latency": 272.26,
+      "total_requests": 20,
+      "meaningful_requests": 16
+    },
+    "chinese": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 23.2,
+      "avg_latency_ms": 67.28850000000001,
+      "avg_throughput": 371.108,
+      "median_throughput": 372.14,
+      "std_throughput": 4.8774245253002055,
+      "min_latency": 9.03,
+      "max_latency": 269.03,
+      "total_requests": 20,
+      "meaningful_requests": 5
+    }
+  },
+  "Ollama": {
+    "english": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 57.6,
+      "avg_latency_ms": 183.43400000000003,
+      "avg_throughput": 365.47,
+      "median_throughput": 377.805,
+      "std_throughput": 72.85224621758323,
+      "min_latency": 150.23,
+      "max_latency": 800.73,
+      "total_requests": 20,
+      "meaningful_requests": 20
+    },
+    "korean": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 29.95,
+      "avg_latency_ms": 154.0605,
+      "avg_throughput": 194.20850000000002,
+      "median_throughput": 107.61,
+      "std_throughput": 141.85486427572445,
+      "min_latency": 152.55,
+      "max_latency": 161.16,
+      "total_requests": 20,
+      "meaningful_requests": 20
+    },
+    "chinese": {
+      "success_rate": 100.0,
+      "avg_tokens_generated": 4.75,
+      "avg_latency_ms": 148.81300000000002,
+      "avg_throughput": 32.072500000000005,
+      "median_throughput": 32.965,
+      "std_throughput": 14.164072368236177,
+      "min_latency": 100.31,
+      "max_latency": 152.25,
+      "total_requests": 20,
+      "meaningful_requests": 0
+    }
+  }
+}
