@@ -18,8 +18,8 @@ This repository contains a comprehensive benchmarking suite comparing three majo
 
 | Metric / 지표 | vLLM | SGLang | Ollama |
 |--------------|------|--------|--------|
-| **Throughput / 처리량** | 🥇 332 tok/s | 69 tok/s | ~120 tok/s |
-| **Latency / 지연시간** | 🥇 262ms | 394ms | 44ms (cached) |
+| **Throughput / 처리량** | 🥇 332 tok/s | 69 tok/s | 131 tok/s |
+| **Latency / 지연시간** | 🥇 262ms | 394ms | 817ms (avg) |
 | **Memory / 메모리 (3 models)** | 27GB | N/A (1 only) | 🥇 8.5GB |
 | **Multi-model / 멀티모델** | ✅ Excellent | ❌ Limited | ✅ Dynamic |
 | **RTX 5090 Support** | ✅ Native | ⚠️ Custom | ✅ Native |
@@ -173,7 +173,7 @@ curl -X POST http://localhost:8001/v1/completions \
 ### Ollama Advantages / Ollama 장점
 - ✅ **68.5% memory savings** vs vLLM / vLLM 대비 68.5% 메모리 절약
 - ✅ **Dynamic model swapping** / 동적 모델 교체
-- ✅ **44ms cached responses** / 44ms 캐시된 응답
+- ✅ **131 tok/s throughput** / 131 tok/s 처리량
 - ✅ **CPU fallback support** / CPU 폴백 지원
 
 ### SGLang Limitations / SGLang 제한사항
@@ -195,7 +195,7 @@ curl -X POST http://localhost:8001/v1/completions \
 
 ### Test Scale / 테스트 규모
 - **4,984** total data points / 총 데이터 포인트
-- **48+ hours** of testing / 48시간 이상의 테스트
+- **Multiple benchmark sessions** / 여러 벤치마크 세션
 - **3 frameworks** × **3 models** × **3 languages** / 3개 프레임워크 × 3개 모델 × 3개 언어
 - **15 different** configurations tested / 15가지 다른 구성 테스트됨
 

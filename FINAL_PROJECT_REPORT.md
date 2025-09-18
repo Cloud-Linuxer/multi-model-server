@@ -34,7 +34,7 @@ This project comprehensively evaluated three major LLM serving frameworks (vLLM,
 - **Total Data Points / 총 데이터 포인트**: 4,984
 - **Models Tested / 테스트 모델**: TinyLlama 1.1B, Qwen 2.5-3B, Yi-6B
 - **Languages / 언어**: English, Chinese (中文), Korean (한국어)
-- **Test Duration / 테스트 기간**: 48+ hours
+- **Benchmark Sessions / 벤치마크 세션**: Multiple test runs
 
 ### Framework Comparison / 프레임워크 비교
 
@@ -42,7 +42,7 @@ This project comprehensively evaluated three major LLM serving frameworks (vLLM,
 |-----------|---------------------|-------------------|-----------------|----------------------|-------------------|
 | **vLLM** | 332 tok/s | 262ms | 27GB (3 models) | ✅ Excellent | ✅ Native |
 | **SGLang** | 69 tok/s | 394ms | ~5GB (1 model) | ❌ Limited | ⚠️ Custom Build |
-| **Ollama** | ~120 tok/s | 824ms (cold) | 8.5GB (3 models) | ✅ Dynamic | ✅ Native |
+| **Ollama** | 131 tok/s | 817ms (avg) | 8.5GB (3 models) | ✅ Dynamic | ✅ Native |
 
 ---
 
@@ -145,11 +145,11 @@ yi:
 - **Success Rate / 성공률**:
   - vLLM: 99.7% (299/300)
   - SGLang: 100% (300/300)
-  - Ollama: 100% (300/300)
+  - Ollama: 100% (3779 successful runs)
 - **Average Response Times / 평균 응답 시간**:
   - vLLM: 262ms (P95: 265ms)
   - SGLang: 394ms (P95: 538ms)
-  - Ollama: 44ms (cached) / 824ms (cold)
+  - Ollama: 817ms average
 
 ### Performance Improvements / 성능 개선
 - vLLM vs SGLang: **378.6% throughput improvement**
