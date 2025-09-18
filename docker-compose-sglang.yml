@@ -1,0 +1,195 @@
+# SGLang 멀티모델 서빙 - RTX 5090 최적화
+version: '3.8'
+
+services:
+  # TinyLlama with SGLang
+  tinyllama-sglang:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-tinyllama
+    ports:
+      - "30001:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      - CUDA_LAUNCH_BLOCKING=1
+      - TORCH_CUDA_ARCH_LIST="8.6;9.0"
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--host", "0.0.0.0",
+      "--port", "30000",
+
+      # SGLang 특화 메모리 설정
+      "--mem-fraction-static", "0.15",     # 정적 메모리 할당 (vLLM의 gpu-memory-utilization과 유사)
+      "--max-prefill-tokens", "2048",      # Prefill 단계 최대 토큰
+      "--max-running-requests", "32",      # 동시 처리 요청 수
+      "--context-length", "2048",          # 컨텍스트 길이
+
+      # RadixAttention은 SGLang의 기본 기능으로 자동 활성화됨
+      # 별도 플래그 없이 자동으로 RadixAttention 사용
+
+      # 성능 최적화
+      "--dtype", "float16",
+
+      # 디버깅
+      "--log-level", "info"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./sglang_cache:/tmp/sglang_cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Qwen with SGLang
+  qwen-sglang:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-qwen
+    ports:
+      - "30002:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      - CUDA_LAUNCH_BLOCKING=1
+      - TORCH_CUDA_ARCH_LIST="8.6;9.0"
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "Qwen/Qwen2.5-3B-Instruct",
+      "--host", "0.0.0.0",
+      "--port", "30000",
+
+      # 메모리 설정
+      "--mem-fraction-static", "0.25",
+      "--max-prefill-tokens", "3072",
+      "--max-running-requests", "24",
+      "--context-length", "4096",
+
+      # RadixAttention은 자동 활성화
+
+      # Qwen 특화 설정
+      "--trust-remote-code",
+      "--enable-flashinfer",               # FlashInfer 백엔드 사용
+
+      # 성능
+      "--disable-cuda-graph",
+      "--dtype", "float16",
+      "--schedule-policy", "lpm",          # Longest Prefix Match
+
+      "--log-level", "info"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./sglang_cache:/tmp/sglang_cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - tinyllama-sglang
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Yi with SGLang
+  yi-sglang:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-yi
+    ports:
+      - "30003:30000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+      - CUDA_LAUNCH_BLOCKING=1
+      - TORCH_CUDA_ARCH_LIST="8.6;9.0"
+    command: [
+      "python", "-m", "sglang.launch_server",
+      "--model-path", "01-ai/Yi-6B-Chat",
+      "--host", "0.0.0.0",
+      "--port", "30000",
+
+      # 메모리 설정
+      "--mem-fraction-static", "0.45",
+      "--max-prefill-tokens", "4096",
+      "--max-running-requests", "16",
+      "--context-length", "4096",
+
+      # RadixAttention은 자동 활성화
+
+      # 최적화
+      "--enable-flashinfer",
+      "--disable-cuda-graph",
+      "--dtype", "float16",
+      "--schedule-policy", "fcfs",         # First Come First Serve
+
+      # 추가 최적화
+      "--enable-torch-compile",             # Torch 컴파일 최적화
+      "--torch-compile-max-bs", "32",
+
+      "--log-level", "info"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+      - ./sglang_cache:/tmp/sglang_cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - qwen-sglang
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:30000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # SGLang Router (선택사항 - 라우팅용)
+  sglang-router:
+    image: lmsysorg/sglang:latest
+    container_name: sglang-router
+    ports:
+      - "30000:30000"
+    command: [
+      "python", "-m", "sglang.launch_router",
+      "--host", "0.0.0.0",
+      "--port", "30000",
+      "--model-endpoints",
+      "http://tinyllama-sglang:30000",
+      "http://qwen-sglang:30000",
+      "http://yi-sglang:30000",
+      "--policy", "round_robin"
+    ]
+    depends_on:
+      - tinyllama-sglang
+      - qwen-sglang
+      - yi-sglang
+    restart: unless-stopped
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  sglang_cache:
+    driver: local

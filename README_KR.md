@@ -578,6 +578,52 @@ export CUDA_LAUNCH_BLOCKING=0
 --tensor-parallel-size 1     # 단일 GPU
 ```
 
+## 🔄 SGLang 대안 평가
+
+### SGLang 테스트 결과 (2025년 9월 18일)
+
+#### ❌ RTX 5090 호환성 문제
+SGLang은 현재 RTX 5090에서 작동하지 않습니다:
+
+```
+NVIDIA GeForce RTX 5090 with CUDA capability sm_120 is not compatible
+PyTorch supports: sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90
+필요한 지원: sm_120 (CUDA 12.0)
+```
+
+#### 테스트 시도 내역
+| 시도 | 방법 | 결과 |
+|------|------|------|
+| 기본 실행 | `lmsysorg/sglang:latest` | CUDA 커널 오류 |
+| 환경 변수 | `CUDA_LAUNCH_BLOCKING=1` | 동일한 오류 |
+| 아키텍처 지정 | `TORCH_CUDA_ARCH_LIST="8.6;9.0"` | sm_120 미지원 |
+| 플래그 조정 | `--disable-cuda-graph` 제거 | 근본적 호환성 문제 |
+
+#### SGLang vs vLLM 비교표
+
+| 특성 | vLLM (RTX 5090) | SGLang (RTX 5090) | SGLang (이론적) |
+|------|-----------------|-------------------|-----------------|
+| **RTX 5090 지원** | ✅ 작동 | ❌ 미지원 | - |
+| **메모리 관리** | PagedAttention | - | RadixAttention |
+| **프리픽스 캐싱** | 제한적 | - | 최대 10x 속도 향상 |
+| **구조화된 생성** | 지원 | - | 우수한 지원 |
+| **실측 성능** | 33-96ms | 측정 불가 | - |
+| **안정성** | 높음 | - | 개발 중 |
+
+### 권장사항
+
+#### RTX 5090 사용자
+- **현재**: vLLM이 유일한 선택
+- **향후**: SGLang의 PyTorch 2.5+ 업데이트 대기
+- **임시책**: RTX 4090에서 SGLang 테스트 고려
+
+#### RTX 4090 이하 사용자
+SGLang 고려 가능한 경우:
+- 반복적인 시스템 프롬프트 사용
+- API 서빙이 주 목적
+- 구조화된 출력 필요
+- 낮은 지연시간 요구
+
 ## 📚 학습된 교훈
 
 ### 1. gpu-memory-utilization의 실제 의미
