@@ -1,0 +1,73 @@
+models:
+  qwen2p5_3b:
+    name: "Qwen/Qwen2.5-3B-Instruct"
+    port: 8001
+    max_tokens: 2048
+    gpu_memory: 0.30
+    temperature_default: 0.7
+    top_p_default: 0.9
+    max_batch_size: 32
+    timeout: 300
+    healthcheck_endpoint: "/health"
+    metrics_endpoint: "/metrics"
+
+  llama32_3b:
+    name: "meta-llama/Llama-3.2-3B-Instruct"
+    port: 8002
+    max_tokens: 2048
+    gpu_memory: 0.30
+    temperature_default: 0.7
+    top_p_default: 0.9
+    max_batch_size: 32
+    timeout: 300
+    healthcheck_endpoint: "/health"
+    metrics_endpoint: "/metrics"
+
+  gemma2_2b:
+    name: "google/gemma-2-2b-it"
+    port: 8003
+    max_tokens: 2048
+    gpu_memory: 0.25
+    temperature_default: 0.7
+    top_p_default: 0.9
+    max_batch_size: 32
+    timeout: 300
+    healthcheck_endpoint: "/health"
+    metrics_endpoint: "/metrics"
+
+load_balancing:
+  strategy: "weighted_round_robin"
+  weights:
+    qwen2p5_3b: 3
+    llama32_3b: 3
+    gemma2_2b: 2
+
+caching:
+  enabled: true
+  ttl: 3600
+  max_entries: 1000
+  redis_host: "redis"
+  redis_port: 6379
+
+rate_limiting:
+  enabled: true
+  global_limit: 100
+  per_user_limit: 10
+  window_seconds: 60
+
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    scrape_interval: 15s
+  grafana:
+    enabled: true
+    port: 3000
+    admin_password: "admin"
+
+logging:
+  level: "INFO"
+  format: "json"
+  max_file_size: "100MB"
+  max_files: 10
+  path: "/var/log/models/"

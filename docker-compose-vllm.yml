@@ -1,0 +1,110 @@
+# vLLM 멀티모델 Docker Compose 구성
+
+services:
+  # Qwen 2.5-3B Model
+  qwen-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen
+    ports:
+      - "8001:8000"
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--served-model-name", "qwen25_3b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.33",
+      "--dtype", "auto",
+      "--trust-remote-code"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # Llama 3.2-3B Model
+  llama-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-llama
+    ports:
+      - "8002:8000"
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "meta-llama/Llama-3.2-3B-Instruct",
+      "--served-model-name", "llama32_3b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.33",
+      "--dtype", "auto"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # Gemma 2-2B Model
+  gemma-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-gemma
+    ports:
+      - "8003:8000"
+    environment:
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "google/gemma-2-2b-it",
+      "--served-model-name", "gemma2_2b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.30",
+      "--dtype", "auto"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # 통합 API Gateway (Nginx)
+  api-gateway:
+    image: nginx:alpine
+    container_name: vllm-gateway
+    ports:
+      - "8000:80"
+    volumes:
+      - ./configs/nginx-vllm.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - qwen-model
+      - llama-model
+      - gemma-model
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+networks:
+  vllm-network:
+    driver: bridge

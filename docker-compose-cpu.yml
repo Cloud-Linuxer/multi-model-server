@@ -1,0 +1,101 @@
+# Docker Compose configuration for CPU-only multi-model serving
+
+services:
+  # API Gateway with FastAPI
+  api-gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./configs:/app/configs:ro
+      - ./api_gateway:/app/api_gateway:ro
+    environment:
+      - QWEN_URL=http://mock-model:8001
+      - LLAMA_URL=http://mock-model:8002
+      - GEMMA_URL=http://mock-model:8003
+    depends_on:
+      - mock-model
+    restart: unless-stopped
+    networks:
+      - model-network
+
+  # Mock model server for testing
+  mock-model:
+    image: python:3.10-slim
+    container_name: mock-model-server
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+    command: python -m http.server 8001
+    networks:
+      - model-network
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:alpine
+    container_name: model-loadbalancer
+    ports:
+      - "8000:80"
+    volumes:
+      - ./configs/nginx-cpu.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
+    networks:
+      - model-network
+
+  # Redis Cache
+  redis:
+    image: redis:alpine
+    container_name: model-cache
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - model-network
+
+  # Prometheus Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./monitoring/prometheus-cpu.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    networks:
+      - model-network
+
+  # Grafana Dashboard
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=redis-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - model-network
+
+networks:
+  model-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:

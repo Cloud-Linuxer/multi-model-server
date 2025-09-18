@@ -1,0 +1,131 @@
+# vLLM 멀티모델 GPU 서빙 - RTX 5090 최적화
+version: '3.8'
+
+services:
+  # TinyLlama 1.1B - 10% GPU
+  tinyllama:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-tinyllama
+    ports:
+      - "8001:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--served-model-name", "tinyllama",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.1",
+      "--enforce-eager",
+      "--disable-log-requests"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Qwen 2.5-3B - 25% GPU
+  qwen:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen
+    ports:
+      - "8002:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--served-model-name", "qwen",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.25",
+      "--trust-remote-code",
+      "--enforce-eager",
+      "--disable-log-requests"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - tinyllama
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Yi-6B - 30% GPU (reduced for stability)
+  yi:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-yi
+    ports:
+      - "8003:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "01-ai/Yi-6B-Chat",
+      "--served-model-name", "yi",
+      "--max-model-len", "1024",
+      "--gpu-memory-utilization", "0.3",
+      "--enforce-eager",
+      "--disable-log-requests",
+      "--dtype", "float16"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    depends_on:
+      - qwen
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # 통합 Gateway
+  gateway:
+    image: nginx:alpine
+    container_name: vllm-gateway
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx-gpu.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - tinyllama
+      - qwen
+      - yi
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  default:
+    driver: bridge

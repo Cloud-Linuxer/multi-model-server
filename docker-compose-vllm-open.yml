@@ -1,0 +1,106 @@
+# vLLM 멀티모델 Docker Compose (오픈 모델 버전)
+# 토큰 없이 사용 가능한 모델들
+
+services:
+  # Qwen 2.5-3B Model (오픈 모델)
+  qwen-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen
+    ports:
+      - "8001:8000"
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--served-model-name", "qwen25_3b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.35",
+      "--dtype", "auto",
+      "--trust-remote-code"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # TinyLlama 1.1B Model (오픈 모델, 경량)
+  tinyllama-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-tinyllama
+    ports:
+      - "8002:8000"
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--served-model-name", "tinyllama_1b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.15",
+      "--dtype", "auto"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # Microsoft Phi-2 2.7B Model (오픈 모델)
+  phi-model:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-phi
+    ports:
+      - "8003:8000"
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "microsoft/phi-2",
+      "--served-model-name", "phi2_2b",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.30",
+      "--dtype", "auto",
+      "--trust-remote-code"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+  # 통합 API Gateway (Nginx)
+  api-gateway:
+    image: nginx:alpine
+    container_name: vllm-gateway
+    ports:
+      - "8000:80"
+    volumes:
+      - ./configs/nginx-vllm-open.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - qwen-model
+      - tinyllama-model
+      - phi-model
+    restart: unless-stopped
+    networks:
+      - vllm-network
+
+networks:
+  vllm-network:
+    driver: bridge

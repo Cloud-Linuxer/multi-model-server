@@ -1,0 +1,79 @@
+# vLLM 멀티모델 서빙 - 간단한 버전
+version: '3.8'
+
+services:
+  # TinyLlama 1.1B - 가장 작은 모델
+  tinyllama:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-tinyllama
+    ports:
+      - "8001:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.2"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  # Qwen 2.5-3B
+  qwen:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen
+    ports:
+      - "8002:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.3",
+      "--trust-remote-code"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+
+  # Yi-6B
+  yi:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-yi
+    ports:
+      - "8003:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "01-ai/Yi-6B-Chat",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.3"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped

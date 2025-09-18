@@ -1,0 +1,27 @@
+# Qwen 최대 메모리 테스트 (0.9 = 90% GPU 사용)
+services:
+  qwen:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-qwen-test
+    ports:
+      - "8002:8000"
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+    command: [
+      "--host", "0.0.0.0",
+      "--model", "Qwen/Qwen2.5-3B-Instruct",
+      "--served-model-name", "qwen",
+      "--max-model-len", "2048",
+      "--gpu-memory-utilization", "0.9",
+      "--trust-remote-code",
+      "--enforce-eager"
+    ]
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]

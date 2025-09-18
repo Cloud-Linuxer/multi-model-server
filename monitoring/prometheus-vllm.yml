@@ -1,0 +1,26 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "vllm-qwen"
+    static_configs:
+      - targets: ["qwen-model:8000"]
+        labels:
+          model: "qwen25_3b"
+
+  - job_name: "vllm-tinyllama"
+    static_configs:
+      - targets: ["tinyllama-model:8000"]
+        labels:
+          model: "tinyllama_1b"
+
+  - job_name: "vllm-yi"
+    static_configs:
+      - targets: ["yi-model:8000"]
+        labels:
+          model: "yi_6b"
+
+  - job_name: "nginx-gateway"
+    static_configs:
+      - targets: ["api-gateway:80"]
