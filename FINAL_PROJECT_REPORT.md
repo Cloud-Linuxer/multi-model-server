@@ -85,14 +85,6 @@ Total: 8.5GB (vs vLLM 27GB) - 3.2x efficient
 
 ## 🔒 Security & Code Quality / 보안 및 코드 품질
 
-### Critical Issues Found / 발견된 중요 이슈
-1. **SSH Private Key Exposure / SSH 개인키 노출** 🔴
-   - Location / 위치: `/root/.ollama/id_ed25519`
-   - Action / 조치: Immediate removal required / 즉시 제거 필요
-
-2. **Hardcoded Credentials / 하드코딩된 자격증명** 🟡
-   - Grafana: admin/admin
-   - Action / 조치: Use environment variables / 환경 변수 사용
 
 ### Code Quality Metrics / 코드 품질 메트릭
 - **Total Files / 전체 파일**: 80+
