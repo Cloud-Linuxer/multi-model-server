@@ -189,15 +189,6 @@ curl -X POST http://localhost:8001/v1/completions \
 - RTX 5090 compatibility challenges / RTX 5090 호환성 과제
 - Limited multi-model support / 제한적 멀티모델 지원
 
-## 🔐 Security Note / 보안 참고사항
-
-⚠️ **Important**: The code analysis found critical security issues that need immediate attention:
-- SSH private key exposure - remove immediately
-- Hardcoded credentials - use environment variables
-
-⚠️ **중요**: 코드 분석에서 즉각적인 주의가 필요한 중요한 보안 문제를 발견했습니다:
-- SSH 개인키 노출 - 즉시 제거
-- 하드코딩된 자격증명 - 환경 변수 사용
 
 ## 📈 Performance Statistics / 성능 통계
 

@@ -83,15 +83,6 @@ Total: 8.5GB (vs vLLM 27GB) - 3.2x efficient
 
 ---
 
-## 🔒 Security & Code Quality / 보안 및 코드 품질
-
-
-### Code Quality Metrics / 코드 품질 메트릭
-- **Total Files / 전체 파일**: 80+
-- **Lines of Code / 코드 라인**: ~2,842
-- **Error Handling / 에러 처리**: 32 try-except blocks ✅
-- **Test Coverage / 테스트 커버리지**: 0% ❌ (needs improvement)
-- **Overall Score / 전체 점수**: 7.5/10 ⭐⭐⭐⭐
 
 ---
 
