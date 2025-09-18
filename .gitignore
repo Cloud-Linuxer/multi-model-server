@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Docker
+*.log
+docker-compose.override.yml
+
+# Model Cache
+.cache/
+~/.cache/
+models/
+*.bin
+*.safetensors
+*.gguf
+
+# Sensitive Data
+*.key
+*.pem
+*.crt
+*.p12
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+.ssh/
+credentials.json
+secrets.yml
+secrets.yaml
+
+# Benchmark Results (keep only summary reports)
+*.csv
+!*_summary.csv
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+*.old
+
+# Ollama
+.ollama/
+ollama_models/
+
+# vLLM
+vllm_cache/
+*.pt
+
+# SGLang
+sglang_cache/
+sglang_workspace/
+
+# Monitoring
+prometheus_data/
+grafana_data/
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# OS Files
+Thumbs.db
+.Spotlight-V100
+.Trashes
+
+# Keep important markdown reports
+!*.md
+!claudedocs/*.md

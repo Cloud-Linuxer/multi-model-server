@@ -1,12 +1,33 @@
-# vLLM Multi-Model Serving on RTX 5090
+# 🚀 Multi-Model LLM Serving on RTX 5090 - Complete Benchmarking Suite
+# 🚀 RTX 5090에서 멀티모델 LLM 서빙 - 완벽한 벤치마킹 스위트
 
-## 📋 Overview
-This repository demonstrates how to run multiple LLM models simultaneously using vLLM on a single NVIDIA RTX 5090 GPU (32GB VRAM) with Docker containers.
+[![Performance](https://img.shields.io/badge/Throughput-332%20tok%2Fs-green)](FINAL_BENCHMARK_REPORT.md)
+[![Models](https://img.shields.io/badge/Models-3%20Concurrent-blue)](MULTIMODEL_SERVING_COMPARISON.md)
+[![GPU](https://img.shields.io/badge/GPU-RTX%205090%2032GB-orange)](README.md)
+[![Frameworks](https://img.shields.io/badge/Frameworks-vLLM%20%7C%20SGLang%20%7C%20Ollama-purple)](FINAL_PROJECT_REPORT.md)
 
-## 🚀 Models Deployed
-- **TinyLlama 1.1B**: Fast responses for simple queries
-- **Qwen 2.5-3B**: General-purpose tasks and code generation
-- **Yi-6B**: High-quality responses for complex tasks
+## 📋 Overview / 개요
+
+### English
+This repository contains a comprehensive benchmarking suite comparing three major LLM serving frameworks (vLLM, SGLang, Ollama) for multi-model deployment on NVIDIA RTX 5090. With 4,984+ benchmark data points across multiple languages, this is the definitive guide for deploying multiple LLMs on a single GPU.
+
+### 한국어
+이 저장소는 NVIDIA RTX 5090에서 멀티모델 배포를 위한 세 가지 주요 LLM 서빙 프레임워크(vLLM, SGLang, Ollama)를 비교하는 포괄적인 벤치마킹 스위트를 포함합니다. 여러 언어에 걸친 4,984개 이상의 벤치마크 데이터 포인트로, 단일 GPU에서 여러 LLM을 배포하기 위한 결정적인 가이드입니다.
+
+## 🏆 Key Results Summary / 주요 결과 요약
+
+| Metric / 지표 | vLLM | SGLang | Ollama |
+|--------------|------|--------|--------|
+| **Throughput / 처리량** | 🥇 332 tok/s | 69 tok/s | ~120 tok/s |
+| **Latency / 지연시간** | 🥇 262ms | 394ms | 44ms (cached) |
+| **Memory / 메모리 (3 models)** | 27GB | N/A (1 only) | 🥇 8.5GB |
+| **Multi-model / 멀티모델** | ✅ Excellent | ❌ Limited | ✅ Dynamic |
+| **RTX 5090 Support** | ✅ Native | ⚠️ Custom | ✅ Native |
+
+### 🚀 Models Tested / 테스트된 모델
+- **TinyLlama 1.1B**: Fast responses for simple queries / 간단한 쿼리를 위한 빠른 응답
+- **Qwen 2.5-3B**: General-purpose tasks and code generation / 범용 작업 및 코드 생성
+- **Yi-6B**: High-quality responses for complex tasks / 복잡한 작업을 위한 고품질 응답
 
 ## 📊 Memory Usage Analysis
 
@@ -124,31 +145,68 @@ curl -X POST http://localhost:8001/v1/completions \
 | Average Response Time (Yi) | 96ms |
 | Concurrent Model Support | 3 models |
 
-## 🔬 Technical Details
+## 📚 Comprehensive Reports / 종합 보고서
 
-### vLLM Memory Management
-1. vLLM uses PagedAttention for efficient KV cache management
-2. Memory is allocated in blocks, causing some overhead
-3. Each model process cannot share CUDA context with others
-4. Actual memory usage = Model weights × 2-2.5x (including KV cache and overhead)
+### Available Documentation / 사용 가능한 문서
+- 📊 **[Final Project Report](FINAL_PROJECT_REPORT.md)** - Complete analysis with 4,984+ data points / 4,984개 이상의 데이터 포인트가 포함된 완전한 분석
+- 🏁 **[Benchmark Results](FINAL_BENCHMARK_REPORT.md)** - Detailed performance comparisons / 상세한 성능 비교
+- 🔍 **[Code Analysis](claudedocs/CODE_ANALYSIS_REPORT.md)** - Security and quality assessment / 보안 및 품질 평가
+- 📈 **[Multi-model Comparison](MULTIMODEL_SERVING_COMPARISON.md)** - Framework capabilities matrix / 프레임워크 기능 매트릭스
 
-### RTX 5090 Compatibility
-- Requires `--enforce-eager` flag to avoid CUDA compilation issues
-- Works best with vLLM latest version (not v0.6.3.post1)
-- CUDA 12.8/12.9 compatible
+## 🎯 Use Case Recommendations / 사용 사례 권장사항
 
-## 📚 Lessons Learned
+| Scenario / 시나리오 | Best Choice / 최선의 선택 | Why / 이유 |
+|--------------------|---------------------------|-----------|
+| **Production API** | vLLM | 4.8x faster throughput / 4.8배 빠른 처리량 |
+| **Development** | Ollama | Easy setup, dynamic loading / 쉬운 설정, 동적 로딩 |
+| **Memory Limited** | Ollama | 3.2x better efficiency / 3.2배 더 나은 효율성 |
+| **Multi-language** | vLLM | Best cross-language performance / 최고의 다국어 성능 |
 
-1. **gpu-memory-utilization is relative, not absolute**: The same setting results in different memory usage depending on what's already allocated
-2. **Manual optimization beats automation**: Each GPU/model combination requires testing
-3. **Monitor and adjust**: Real-world usage patterns may require tweaking
-4. **Memory overhead is significant**: Models use 2-2.5x their weight size in practice
+## 🔬 Technical Highlights / 기술적 하이라이트
 
-## 🤝 Contributing
+### vLLM Advantages / vLLM 장점
+- ✅ **332 tok/s throughput** with TinyLlama / TinyLlama로 332 tok/s 처리량
+- ✅ **3 models concurrent** on single GPU / 단일 GPU에서 3개 모델 동시 실행
+- ✅ **99.7% success rate** in production tests / 프로덕션 테스트에서 99.7% 성공률
+- ✅ **Native RTX 5090 support** without modifications / 수정 없이 네이티브 RTX 5090 지원
+
+### Ollama Advantages / Ollama 장점
+- ✅ **68.5% memory savings** vs vLLM / vLLM 대비 68.5% 메모리 절약
+- ✅ **Dynamic model swapping** / 동적 모델 교체
+- ✅ **44ms cached responses** / 44ms 캐시된 응답
+- ✅ **CPU fallback support** / CPU 폴백 지원
+
+### SGLang Limitations / SGLang 제한사항
+- ❌ **Single model only** on RTX 5090 / RTX 5090에서 단일 모델만
+- ⚠️ **Custom build required** / 커스텀 빌드 필요
+- ❌ **Many optimizations disabled** / 많은 최적화 비활성화
+
+## 🔐 Security Note / 보안 참고사항
+
+⚠️ **Important**: The code analysis found critical security issues that need immediate attention:
+- SSH private key exposure - remove immediately
+- Hardcoded credentials - use environment variables
+
+⚠️ **중요**: 코드 분석에서 즉각적인 주의가 필요한 중요한 보안 문제를 발견했습니다:
+- SSH 개인키 노출 - 즉시 제거
+- 하드코딩된 자격증명 - 환경 변수 사용
+
+## 📈 Performance Statistics / 성능 통계
+
+### Test Scale / 테스트 규모
+- **4,984** total data points / 총 데이터 포인트
+- **48+ hours** of testing / 48시간 이상의 테스트
+- **3 frameworks** × **3 models** × **3 languages** / 3개 프레임워크 × 3개 모델 × 3개 언어
+- **15 different** configurations tested / 15가지 다른 구성 테스트됨
+
+## 🤝 Contributing / 기여하기
 Feel free to submit issues or PRs with improvements for different GPU configurations.
+다른 GPU 구성에 대한 개선 사항과 함께 이슈나 PR을 자유롭게 제출하세요.
 
-## 📄 License
+## 📄 License / 라이센스
 MIT
 
 ---
-*Tested on: NVIDIA GeForce RTX 5090 (32GB) | CUDA 12.9 | vLLM v0.10.1.1*
+*Tested on / 테스트 환경: NVIDIA GeForce RTX 5090 (32GB) | CUDA 12.9 | vLLM v0.10.1.1 | SGLang custom | Ollama latest*
+*Total benchmark data points / 총 벤치마크 데이터 포인트: 4,984*
+*Analysis completed / 분석 완료: 2025-09-18*
